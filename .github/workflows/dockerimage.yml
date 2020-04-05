@@ -3,10 +3,10 @@ name: QR code generator
 on:
   push:
     branches: [master]
+    tags: 
+      - v*
   pull_request:
     branches: [master]
-  tags:
-    - v*
 env:
   IMAGE_NAME: qr-code-generator
 
