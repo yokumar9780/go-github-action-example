@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
-        run: docker build --build-arg http_proxy=http://httppxgot.srv.volvo.com:8080 --build-arg https_proxy=http://httppxgot.srv.volvo.com:8080 --build-arg no_proxy=".volvo.com,.volvo.net,vgthosting.net,localhost,127.0.0.1" . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
