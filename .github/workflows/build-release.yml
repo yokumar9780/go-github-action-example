@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 env:
   LATEST_TAG_VERSION: latest
-  MAGE_NAME: qr-code-generator
+  IMAGE_NAME: qr-code-generator
 jobs:
 
   build:
@@ -48,5 +48,5 @@ jobs:
           VERSION=$(echo $VERSION | sed -e 's/^v//')
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          docker tag image $IMAGE_ID:$VERSION
+          docker tag image $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:$VERSION
