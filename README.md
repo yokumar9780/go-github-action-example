@@ -2,6 +2,8 @@
 
 ## buid
 
+docker build -t go-github-action-example .
+
 docker build --build-arg http_proxy=http://httppxgot.srv.volvo.com:8080 --build-arg https_proxy=http://httppxgot.srv.volvo.com:8080 --build-arg no_proxy=".volvo.com,.volvo.net,vgthosting.net,localhost,127.0.0.1" -t go-github-action-example .
 
 ## run
