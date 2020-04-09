@@ -23,3 +23,5 @@ jobs:
           LATEST_TAG_VERSION=  echo $(git describe --tags `git rev-list --tags --max-count=1`)
           echo "version number " $LATEST_TAG_VERSION
           echo $LATEST_TAG_VERSION
+          run: echo ::set-env name=VERSION::$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo ${{ env.VERSION }}
