@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+env:
+  LATEST_TAG_VERSION: latest
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,3 +22,4 @@ jobs:
           git config remote.origin.url https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           LATEST_TAG_VERSION=  echo $(git describe --tags `git rev-list --tags --max-count=1`)
           echo "version number " $LATEST_TAG_VERSION
+          echo $LATEST_TAG_VERSION
