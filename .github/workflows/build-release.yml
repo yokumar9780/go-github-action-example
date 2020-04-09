@@ -45,7 +45,8 @@ jobs:
           echo VERSION=$VERSION
           
           NEW_TAG=${{ steps.bump_version.outputs.new_tag }}
-          NEW_TAG=$(echo $new_tag | sed -e 's/^v//')
+          NEW_TAG=$(echo $NEW_TAG | sed -e 's/^v//')
+          echo NEW_TAG=$NEW_TAG
           
           docker tag image $IMAGE_ID:$NEW_TAG
           docker tag image $IMAGE_ID:latest
