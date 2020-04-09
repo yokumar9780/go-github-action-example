@@ -44,10 +44,12 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           
-          echo new_tag: ${{ steps.bump_version.outputs.new_tag }}
-          echo new_tag: ${{ steps.bump_version.outputs.tag  }}
-          echo new_tag_all: ${{ steps.bump_version }}
+          NEW_TAG=${{ steps.bump_version.outputs.new_tag }}
+          NEW_TAG=$(echo $new_tag | sed -e 's/^v//')
           
-          docker tag image $IMAGE_ID:$VERSION
+          docker tag image $IMAGE_ID:$NEW_TAG
           docker tag image $IMAGE_ID:latest
-          docker push $IMAGE_ID:$VERSION
+          
+          docker push $IMAGE_ID:$NEW_TAG
+          docker push $IMAGE_ID:latest
+          
