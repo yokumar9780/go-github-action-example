@@ -44,7 +44,9 @@ jobs:
           [[ "${{ github.ref }}" == "refs/tags/"*  ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
+          VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+          VERSION=$(echo $VERSION | sed -e 's/^v//')
           echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$LATEST_TAG_VERSION
-          docker tag image $IMAGE_ID:$LATEST_TAG_VERSION
-          docker push $IMAGE_ID:$LATEST_TAG_VERSION
+          echo VERSION=$VERSION
+          docker tag image $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
