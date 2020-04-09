@@ -17,6 +17,7 @@ jobs:
       with:
         fetch-depth: '0'
     - name: Bump version and push tag
+      id: bump_version
       uses: anothrNick/github-tag-action@1.17.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -24,9 +25,6 @@ jobs:
     - name: Fetch all history for all tags and branches
       run: |
           git config remote.origin.url https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          echo LATEST_TAG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "version number " $LATEST_TAG_VERSION
-          echo $LATEST_TAG_VERSION
   
     #if: github.event_name == 'push'
     - name: Build image
@@ -38,16 +36,18 @@ jobs:
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"*  ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
+          
           VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+          # Strip "v" prefix from tag name
           VERSION=$(echo $VERSION | sed -e 's/^v//')
+          
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
+          
+          echo new_tag: ${{ steps.bump_version.outputs.new_tag }}
+          echo new_tag: ${{ steps.bump_version.outputs.tag  }}
+          echo new_tag_all: ${{ steps.bump_version }}
+          
           docker tag image $IMAGE_ID:$VERSION
           docker tag image $IMAGE_ID:latest
           docker push $IMAGE_ID:$VERSION
